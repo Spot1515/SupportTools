@@ -24,6 +24,11 @@ namespace SupportTools
         [STAThread]
         static void Main()
         {
+            //Pull all items from App Config file
+            AppSettingFileImport();
+
+
+            //Starts the Windows Form
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new Form1());
@@ -39,12 +44,13 @@ namespace SupportTools
         //Program Setup Methods
         private static void AppSettingFileImport()
         {
-            MessageBox.Show("Method AppSettingFileImport has not been enabled yet");
             //This method will pull in all of the stored vaibles on startup from the App.Config file
 
             DailyTempDirectory = ConfigurationManager.AppSettings["DailyTempDirectory"];
             DailyTempArchiveDirectory = ConfigurationManager.AppSettings["DailyTempArchiveDirectory"];
             DailyNotesDirectory = ConfigurationManager.AppSettings["DailyNotesDirectory"];
+
+            //MessageBox.Show("Method AppSettingFileImport has not been enabled yet");
         }
         static void TriggerSetup()
         {
