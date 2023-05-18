@@ -48,11 +48,13 @@
             this.DailyTempDirectoryUpdateButton.TabIndex = 0;
             this.DailyTempDirectoryUpdateButton.Text = "Update";
             this.DailyTempDirectoryUpdateButton.UseVisualStyleBackColor = true;
+            this.DailyTempDirectoryUpdateButton.Click += new System.EventHandler(this.DailyTempDirectoryUpdateButton_Click);
             // 
             // DailyTempDirectoryTextBox
             // 
             this.DailyTempDirectoryTextBox.Location = new System.Drawing.Point(158, 9);
             this.DailyTempDirectoryTextBox.Name = "DailyTempDirectoryTextBox";
+            this.DailyTempDirectoryTextBox.ReadOnly = true;
             this.DailyTempDirectoryTextBox.Size = new System.Drawing.Size(393, 20);
             this.DailyTempDirectoryTextBox.TabIndex = 1;
             // 
@@ -63,6 +65,7 @@
             this.ConsolTextBox.Location = new System.Drawing.Point(12, 260);
             this.ConsolTextBox.Multiline = true;
             this.ConsolTextBox.Name = "ConsolTextBox";
+            this.ConsolTextBox.ReadOnly = true;
             this.ConsolTextBox.Size = new System.Drawing.Size(776, 178);
             this.ConsolTextBox.TabIndex = 2;
             // 
@@ -89,6 +92,7 @@
             // 
             this.DailyTempArchiveDirectoryTextBox.Location = new System.Drawing.Point(158, 35);
             this.DailyTempArchiveDirectoryTextBox.Name = "DailyTempArchiveDirectoryTextBox";
+            this.DailyTempArchiveDirectoryTextBox.ReadOnly = true;
             this.DailyTempArchiveDirectoryTextBox.Size = new System.Drawing.Size(393, 20);
             this.DailyTempArchiveDirectoryTextBox.TabIndex = 5;
             // 
@@ -114,6 +118,7 @@
             // 
             this.DailyNotesDirectoryTextBox.Location = new System.Drawing.Point(158, 61);
             this.DailyNotesDirectoryTextBox.Name = "DailyNotesDirectoryTextBox";
+            this.DailyNotesDirectoryTextBox.ReadOnly = true;
             this.DailyNotesDirectoryTextBox.Size = new System.Drawing.Size(393, 20);
             this.DailyNotesDirectoryTextBox.TabIndex = 8;
             // 
