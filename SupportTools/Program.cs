@@ -27,11 +27,17 @@ namespace SupportTools
             //Pull all items from App Config file
             AppSettingFileImport();
 
+            //Testing
+            DailyTempFolderCheckorCreate();
+
 
             //Starts the Windows Form
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(new Form1());
+
+
+
         }
 
         //App Config Variables
@@ -45,11 +51,13 @@ namespace SupportTools
         private static void AppSettingFileImport()
         {
             //This method will pull in all of the stored vaibles on startup from the App.Config file
+            Console.WriteLine("Getting App Files");
 
-            DailyTempDirectory = ConfigurationManager.AppSettings["DailyTempDirectory"];
+            DailyTempDirectory = ConfigurationManager.AppSettings["dailyTempDirectory"];
             DailyTempArchiveDirectory = ConfigurationManager.AppSettings["DailyTempArchiveDirectory"];
             DailyNotesDirectory = ConfigurationManager.AppSettings["DailyNotesDirectory"];
 
+            Console.WriteLine("Getting App Files end");
             //MessageBox.Show("Method AppSettingFileImport has not been enabled yet");
         }
         static void TriggerSetup()
@@ -59,9 +67,27 @@ namespace SupportTools
 
 
         //Daily Temp Folder Methods
-        private static void CreateDailyTempFolder()
+        private static void DailyTempFolderCheckorCreate()
         {
-            MessageBox.Show("Method CreateDailyTempFolder has not been enabled yet");
+            //THis methiod will check if there is already a daily temp folder for today
+            //If not then it will create one
+
+            var todaysTempFolder = Path.Combine(DailyTempDirectory, DateTime.Now.ToString("yyyyMMdd"));
+            if (Directory.Exists(todaysTempFolder))
+            {
+                Console.WriteLine($"Folder Already Exist {todaysTempFolder}");
+                return;
+            }
+            else
+            {
+                Directory.CreateDirectory(todaysTempFolder);
+                Console.WriteLine($"Folder Created: {todaysTempFolder}");
+            }
+
+
+
+
+            //MessageBox.Show("Method CreateDailyTempFolder has not been enabled yet");
         }
         private static void ArchiveDailyTempFolders()
         {
