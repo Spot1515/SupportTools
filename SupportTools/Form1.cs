@@ -7,6 +7,7 @@ using Microsoft.Office.Interop.Word;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SupportTools
 {
@@ -250,8 +251,134 @@ namespace SupportTools
             wordApp.Quit(ref missing, ref missing, ref missing);
             AddConsoleMessageToLogs($"Daily Notes was added: {outputPath}");
         }
-        private static void UpdateCheckDailyNotesDoc()
+        private void UpdateCheckDailyNotesDoc()
         {
+            object missing = System.Reflection.Missing.Value;
+            List<string> newTicket = new List<string>();
+            List<string> newTicketFolders = new List<string>();
+            var currentDate = DateTime.Now;
+
+            // Open the Word document
+            string documentPath = Path.Combine(DailyNotesDirectory, string.Format("DailyNotes{0}.docx", currentDate.ToString("yyyyMMdd")));
+            //string documentPath = @"E:\TestItems\TempTesting\DailyNotes_20230415.docx";
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+            Document doc = wordApp.Documents.Open(documentPath, ReadOnly: true);
+
+            //Gets todays temp folder as string
+
+            var todaysTempFolder = Path.Combine(DailyTempDirectory, currentDate.ToString("yyyyMMdd"));
+            AddConsoleMessageToLogs($"todays Temp Folder: {todaysTempFolder}");
+
+            //Gets all of todaystemp subfolders
+            var todaysTickets = Directory.GetDirectories(todaysTempFolder);
+
+            //Iterates thought Headers looking for Text that matches ticket numbers
+            //creates nnew ticket folder if needed
+            foreach (Paragraph paragraph in doc.Paragraphs)
+            {
+                //CHeck if heading style == Heading 3
+                Style style = paragraph.get_Style() as Style;
+                if (style != null && style.NameLocal.StartsWith("Heading 2"))
+                {
+                    //Check if the Text matches the ticket format
+                    string pattern = @"Ticket #\s?(\d{6})\b";
+                    Match match = Regex.Match(paragraph.Range.Text, pattern);
+                    if (match.Success)
+                    {
+                        //get the sub string for check
+                        if (!todaysTickets.Any(item => item.Contains(match.Groups[1].Value)))
+                        {
+                            Console.WriteLine("New TicketNum: " + match.Groups[1].Value);
+
+                            //Creates a folder with the ticket numer and 50 charicters 
+                            string patternFolderName = @"(\d{6}.{0,50})";
+                            Match matchFolderName = Regex.Match(paragraph.Range.Text, patternFolderName);
+                            string cleanedString = Regex.Replace(matchFolderName.Value, @"[^a-zA-Z0-9]+", "_");
+                            Directory.CreateDirectory(Path.Combine(todaysTempFolder, cleanedString));
+
+                            //adds ticket number to new ticket list for use latter
+                            //newTicket.Add(Path.Combine(todaysTempFolder, cleanedString));
+                            newTicket.Add(match.Groups[1].Value);
+                            newTicketFolders.Add(Path.Combine(todaysTempFolder, cleanedString));
+                        }
+                    }
+                }
+            }
+            // Close the Word document
+            doc.Close();
+            wordApp.Quit();
+
+            //Copy items from ticket folder in other daily temp folders
+            //This way everthing from the last days will be avabile with out loooking for it 
+            if (newTicket.Count != 0)
+            {
+                //Get a list of all sub folder in daily temp folder.
+                string[] subFolders = Directory.GetDirectories(DailyTempDirectory, "*", SearchOption.AllDirectories);
+
+                foreach (string subFolder in subFolders)
+                {
+                    //Console.WriteLine($"\nCurrent subFolder: {subFolder}");
+                    string folderName = Path.GetFileName(subFolder);
+                    foreach (string ticket in newTicket)
+                    {
+                        //Console.WriteLine($"Current ticket: {ticket}");
+                        //Console.WriteLine($"Current todayTempFolder: {Path.GetFileName(todaysTempFolder)}");
+                        //Console.WriteLine($"Current folderName: {folderName}");
+
+                        if (!subFolder.Contains(Path.GetFileName(todaysTempFolder))
+                            && folderName.Contains(ticket))
+                        {
+                            Console.WriteLine($"Match: {subFolder}");
+                            foreach (string newTicketFolder in newTicketFolders)
+                            {
+                                if (newTicketFolder.Contains(ticket))
+                                {
+                                    // Get the source and destination directory paths
+                                    //string sourceDirectoryPath = @"C:\SourceDirectory";
+                                    DirectoryInfo parentDir = Directory.GetParent(subFolder);
+                                    string destinationDirectoryPath = Path.Combine(newTicketFolder, parentDir.Name);
+                                    //string destinationDirectoryPath = @"C:\DestinationDirectory";
+                                    Console.WriteLine($"Destin Path: {destinationDirectoryPath}");
+
+
+                                    // Create a new DirectoryInfo instance for the source directory
+                                    DirectoryInfo sourceDirectory = new DirectoryInfo(subFolder);
+
+                                    // Get all files and subdirectories in the source directory
+                                    FileSystemInfo[] filesAndFolders = sourceDirectory.GetFileSystemInfos("*", SearchOption.AllDirectories);
+                                    if (filesAndFolders.Length > 0)
+                                    {
+                                        //Create dated folder for when the data comes from
+                                        Directory.CreateDirectory(destinationDirectoryPath);
+
+                                        // Copy each file and folder to the destination directory
+                                        foreach (var fileOrFolder in filesAndFolders)
+                                        {
+                                            Console.WriteLine($"fileOrFolder: {fileOrFolder}");
+                                            // Create the new path to the destination file or folder
+                                            string newFilePath = Path.Combine(destinationDirectoryPath, fileOrFolder.FullName.Substring(subFolder.Length + 1));
+
+                                            if (fileOrFolder.Attributes.HasFlag(FileAttributes.Directory))
+                                            {
+                                                // Create the destination folder if it doesn't exist
+                                                Directory.CreateDirectory(newFilePath);
+                                            }
+                                            else
+                                            {
+                                                // Copy the file to the destination folder
+                                                File.Copy(fileOrFolder.FullName, newFilePath, true);
+                                            }
+                                        }
+
+                                        Console.WriteLine("Files and folders copied successfully.");
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             MessageBox.Show("Method UpdateCheckDailyNotesDoc has not been enabled yet");
         }
 
