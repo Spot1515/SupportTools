@@ -20,6 +20,7 @@ namespace SupportTools
 
             DailyTempFolderCheckorCreate();
             ArchiveDailyTempFolders("20230510");
+            CreateDailyNotesDoc();
 
 
         }
@@ -215,9 +216,39 @@ namespace SupportTools
 
 
         //Daily Notes Methods
-        private static void CreateDailyNotesDoc()
+        private void CreateDailyNotesDoc()
         {
-            MessageBox.Show("Method CreateDailyNotesDoc has not been enabled yet");
+            AddConsoleMessageToLogs("Starting DailyNotesDoc");
+
+            object missing = System.Reflection.Missing.Value;
+
+            //check if the file already exist and exit if it does
+            DateTime dateTime = DateTime.Now;
+            string outputPath = Path.Combine(DailyNotesDirectory, string.Format("DailyNotes_{0}.docx", dateTime.ToString("yyyyMMdd")));
+            if (File.Exists(outputPath))
+            {
+                AddConsoleMessageToLogs($"Daily Notes File {outputPath} already exist");
+                return;
+            }
+
+            // Create a new instance of Word and make it visible
+            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application();
+            wordApp.Visible = false;
+
+            var todaysNotes = Path.Combine(Directory.GetCurrentDirectory(), "Daily Notes.dotx");
+
+            // Open the template
+            Document doc = wordApp.Documents.Add(todaysNotes, ref missing, ref missing, ref missing);
+
+            // Save the new document
+            doc.SaveAs2(outputPath, WdSaveFormat.wdFormatXMLDocument, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+
+            // Close the template
+            doc.Close(ref missing, ref missing, ref missing);
+
+            // Quit Word
+            wordApp.Quit(ref missing, ref missing, ref missing);
+            AddConsoleMessageToLogs($"Daily Notes was added: {outputPath}");
         }
         private static void UpdateCheckDailyNotesDoc()
         {
