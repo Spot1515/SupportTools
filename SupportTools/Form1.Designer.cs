@@ -38,6 +38,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.DailyNotesDirectoryTextBox = new System.Windows.Forms.TextBox();
             this.DailyNotesDirectoryUpdateButton = new System.Windows.Forms.Button();
+            this.DailyTempAutoCreateRadioButton = new System.Windows.Forms.RadioButton();
+            this.DailyTempArchiveAutoCreateRadioButton = new System.Windows.Forms.RadioButton();
+            this.DailyNoteAutoCreateRadioButton3 = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // DailyTempDirectoryUpdateButton
@@ -66,6 +69,7 @@
             this.ConsolTextBox.Multiline = true;
             this.ConsolTextBox.Name = "ConsolTextBox";
             this.ConsolTextBox.ReadOnly = true;
+            this.ConsolTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.ConsolTextBox.Size = new System.Drawing.Size(776, 178);
             this.ConsolTextBox.TabIndex = 2;
             // 
@@ -104,6 +108,7 @@
             this.DailyTempArchiveDirectoryUpdateButton.TabIndex = 4;
             this.DailyTempArchiveDirectoryUpdateButton.Text = "Update";
             this.DailyTempArchiveDirectoryUpdateButton.UseVisualStyleBackColor = true;
+            this.DailyTempArchiveDirectoryUpdateButton.Click += new System.EventHandler(this.DailyTempArchiveDirectoryUpdateButton_Click);
             // 
             // label3
             // 
@@ -130,12 +135,55 @@
             this.DailyNotesDirectoryUpdateButton.TabIndex = 7;
             this.DailyNotesDirectoryUpdateButton.Text = "Update";
             this.DailyNotesDirectoryUpdateButton.UseVisualStyleBackColor = true;
+            this.DailyNotesDirectoryUpdateButton.Click += new System.EventHandler(this.DailyNotesDirectoryUpdateButton_Click);
+            // 
+            // DailyTempAutoCreateRadioButton
+            // 
+            this.DailyTempAutoCreateRadioButton.AutoSize = true;
+            this.DailyTempAutoCreateRadioButton.Enabled = false;
+            this.DailyTempAutoCreateRadioButton.Location = new System.Drawing.Point(638, 13);
+            this.DailyTempAutoCreateRadioButton.Name = "DailyTempAutoCreateRadioButton";
+            this.DailyTempAutoCreateRadioButton.Size = new System.Drawing.Size(81, 17);
+            this.DailyTempAutoCreateRadioButton.TabIndex = 10;
+            this.DailyTempAutoCreateRadioButton.TabStop = true;
+            this.DailyTempAutoCreateRadioButton.Text = "Auto Create";
+            this.DailyTempAutoCreateRadioButton.UseVisualStyleBackColor = true;
+            this.DailyTempAutoCreateRadioButton.CheckedChanged += new System.EventHandler(this.DailyTempAutoCreateRadioButton_CheckedChanged);
+            // 
+            // DailyTempArchiveAutoCreateRadioButton
+            // 
+            this.DailyTempArchiveAutoCreateRadioButton.AutoSize = true;
+            this.DailyTempArchiveAutoCreateRadioButton.Enabled = false;
+            this.DailyTempArchiveAutoCreateRadioButton.Location = new System.Drawing.Point(638, 39);
+            this.DailyTempArchiveAutoCreateRadioButton.Name = "DailyTempArchiveAutoCreateRadioButton";
+            this.DailyTempArchiveAutoCreateRadioButton.Size = new System.Drawing.Size(81, 17);
+            this.DailyTempArchiveAutoCreateRadioButton.TabIndex = 11;
+            this.DailyTempArchiveAutoCreateRadioButton.TabStop = true;
+            this.DailyTempArchiveAutoCreateRadioButton.Text = "Auto Create";
+            this.DailyTempArchiveAutoCreateRadioButton.UseVisualStyleBackColor = true;
+            this.DailyTempArchiveAutoCreateRadioButton.CheckedChanged += new System.EventHandler(this.DailyTempArchiveAutoCreateRadioButton_CheckedChanged);
+            // 
+            // DailyNoteAutoCreateRadioButton3
+            // 
+            this.DailyNoteAutoCreateRadioButton3.AutoSize = true;
+            this.DailyNoteAutoCreateRadioButton3.Enabled = false;
+            this.DailyNoteAutoCreateRadioButton3.Location = new System.Drawing.Point(638, 65);
+            this.DailyNoteAutoCreateRadioButton3.Name = "DailyNoteAutoCreateRadioButton3";
+            this.DailyNoteAutoCreateRadioButton3.Size = new System.Drawing.Size(81, 17);
+            this.DailyNoteAutoCreateRadioButton3.TabIndex = 12;
+            this.DailyNoteAutoCreateRadioButton3.TabStop = true;
+            this.DailyNoteAutoCreateRadioButton3.Text = "Auto Create";
+            this.DailyNoteAutoCreateRadioButton3.UseVisualStyleBackColor = true;
+            this.DailyNoteAutoCreateRadioButton3.CheckedChanged += new System.EventHandler(this.DailyNoteAutoCreateRadioButton3_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.DailyNoteAutoCreateRadioButton3);
+            this.Controls.Add(this.DailyTempArchiveAutoCreateRadioButton);
+            this.Controls.Add(this.DailyTempAutoCreateRadioButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.DailyNotesDirectoryTextBox);
             this.Controls.Add(this.DailyNotesDirectoryUpdateButton);
@@ -165,6 +213,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox DailyNotesDirectoryTextBox;
         private System.Windows.Forms.Button DailyNotesDirectoryUpdateButton;
+        private System.Windows.Forms.RadioButton DailyTempAutoCreateRadioButton;
+        private System.Windows.Forms.RadioButton DailyTempArchiveAutoCreateRadioButton;
+        private System.Windows.Forms.RadioButton DailyNoteAutoCreateRadioButton3;
     }
 }
 
